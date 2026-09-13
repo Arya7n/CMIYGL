@@ -14,6 +14,7 @@ export function IntroOverlay({ open, removed, onDismiss }: IntroOverlayProps) {
         type="button"
         aria-label="Start ID generator"
         className={`intro-card ${open ? 'open' : ''} ${removed ? 'hidden' : ''}`}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/tylerid.png)` }}
         onClick={onDismiss}
       />
     </>

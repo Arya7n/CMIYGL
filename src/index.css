@@ -63,6 +63,7 @@ input::placeholder {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  pointer-events: none;
 }
 
 .photo-slot {
@@ -75,7 +76,7 @@ input::placeholder {
   background: transparent;
   font-size: 2vw;
   cursor: pointer;
-  z-index: 2;
+  z-index: 10;
 }
 
 .photo-preview {
@@ -90,14 +91,14 @@ input::placeholder {
   transform: rotate(-1deg);
   box-shadow: 2px 2px 15px -3px #000;
   cursor: pointer;
-  z-index: 2;
+  z-index: 10;
 }
 
 .field-name,
 .field-dob,
 .field-location {
   position: absolute;
-  z-index: 2;
+  z-index: 10;
   text-align: center;
   background: transparent;
   border: none;
@@ -134,7 +135,7 @@ input::placeholder {
   font-size: 1.5vw;
   font-family: var(--font-sign);
   cursor: pointer;
-  z-index: 2;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -143,7 +144,7 @@ input::placeholder {
 
 .action-btn {
   position: absolute;
-  z-index: 2;
+  z-index: 10;
   top: 26.9vw;
   width: 9vw;
   height: 1.6vw;
@@ -203,15 +204,21 @@ input::placeholder {
   transform: translate(-50%, -50%);
   width: 50vw;
   height: 31.703vw;
-  background: url("/images/tylerid.png") center / cover no-repeat;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   transition: opacity 3s;
   z-index: 1000;
   opacity: 0;
   cursor: pointer;
+  pointer-events: none;
+  border: none;
+  padding: 0;
 }
 
 .intro-card.open {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .intro-card.hidden,
