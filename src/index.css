@@ -352,9 +352,9 @@ input::placeholder {
 @media (max-width: 812px) {
   .stage {
     width: 100%;
-    justify-content: flex-start;
-    padding-top: max(2.5rem, env(safe-area-inset-top));
-    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    justify-content: center;
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
   }
 
   .id-frame {
