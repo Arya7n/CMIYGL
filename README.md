@@ -1,6 +1,10 @@
-# CMIYGL — Call Me If You Get Lost ID Generator
+# CMIYGL — ID Generator
 
-Passport / ID generator built with **React**, **Vite**, and **Tailwind CSS**.
+A small web app that lets you design a passport-style ID. Add a photo, your name, date of birth, location, and a signature, pick a card color, then download a high-resolution image.
+
+Built with **React**, **Vite**, and **Tailwind CSS**. It also works as a **PWA**, so you can add it to your home screen.
+
+This project is independent and unofficial. It is not affiliated with, endorsed by, or connected to Tyler, The Creator, Columbia Records, or any related brand or campaign.
 
 ## Develop
 
@@ -8,10 +12,6 @@ Passport / ID generator built with **React**, **Vite**, and **Tailwind CSS**.
 npm install
 npm run dev
 ```
-
-## PWA
-
-After deploy (HTTPS), phones can **Add to Home Screen**. The app installs as a standalone ID generator and caches assets for offline use.
 
 ## Build
 
@@ -27,3 +27,4 @@ npm run preview
 - Signature pad (falls back to handwritten name)
 - Four card colors (yellow, mint, pink, blue)
 - High-resolution canvas export (~2014×1277)
+- Installable on phones (PWA)
