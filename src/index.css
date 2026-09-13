@@ -1,0 +1,308 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Lato", ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Nanum Pen Script", cursive;
+  --font-sign: "Rock Salt", cursive;
+  --color-cream: #faefcf;
+  --color-ink: #492b1a;
+  --color-accent: #68c9d2;
+  --color-result: #f8c0bf;
+  --color-page: #fdfcfa;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 200;
+  background-color: var(--color-page);
+  overflow-x: hidden;
+}
+
+input::placeholder {
+  color: #000;
+}
+
+.handwriting {
+  font-family: var(--font-hand);
+}
+
+.signature-font {
+  font-family: var(--font-sign);
+}
+
+/* ID card geometry — vw-based to match original promo layout */
+.stage {
+  position: absolute;
+  width: 50vw;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
+.id-frame {
+  position: relative;
+  width: 50vw;
+  height: 31.703vw;
+  margin: 0 auto;
+}
+
+.id-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.photo-slot {
+  position: absolute;
+  top: 5.2vw;
+  left: 4.2vw;
+  width: 19.2vw;
+  height: 21.35vw;
+  border: 1px solid #000;
+  background: transparent;
+  font-size: 2vw;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.photo-preview {
+  position: absolute;
+  top: 5.9vw;
+  left: 3.6vw;
+  width: 20.3vw;
+  height: 20vw;
+  object-fit: cover;
+  background: #fff;
+  border: 1px solid #000;
+  transform: rotate(-1deg);
+  box-shadow: 2px 2px 15px -3px #000;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.field-name,
+.field-dob,
+.field-location {
+  position: absolute;
+  z-index: 2;
+  text-align: center;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 2vw;
+  height: 2.3vw;
+  line-height: 2.3vw;
+  color: #000;
+}
+
+.field-name {
+  top: 6.2vw;
+  right: 4.6vw;
+  width: 16vw;
+}
+
+.field-dob {
+  top: 8.1vw;
+  right: 4.6vw;
+  width: 14vw;
+}
+
+.field-location {
+  top: 10vw;
+  right: 4.6vw;
+  width: 14vw;
+}
+
+.signature-box {
+  position: absolute;
+  right: 4.6vw;
+  top: 24.8vw;
+  width: 20.5vw;
+  font-size: 1.5vw;
+  font-family: var(--font-sign);
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2vw;
+}
+
+.action-btn {
+  position: absolute;
+  z-index: 2;
+  top: 26.9vw;
+  width: 9vw;
+  height: 1.6vw;
+  font-size: 1vw;
+  line-height: 1.6vw;
+  text-align: center;
+  border: none;
+  border-radius: 0.5vw;
+  text-transform: uppercase;
+  color: var(--color-cream);
+  background: var(--color-accent);
+  transition: color 0.3s, background 0.3s;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.action-btn:hover {
+  color: var(--color-accent);
+  background: var(--color-cream);
+}
+
+.btn-color {
+  left: 4vw;
+}
+
+.btn-submit {
+  left: 14.5vw;
+}
+
+.intro-text {
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 700;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2vw;
+  width: 50vw;
+  margin-top: -17vw;
+  text-transform: uppercase;
+  transition: opacity 3s;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  text-align: center;
+}
+
+.intro-text.open {
+  opacity: 1;
+}
+
+.intro-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  height: 31.703vw;
+  background: url("/images/tylerid.png") center / cover no-repeat;
+  transition: opacity 3s;
+  z-index: 1000;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.intro-card.open {
+  opacity: 1;
+}
+
+.intro-card.hidden,
+.intro-text.hidden {
+  display: none;
+  z-index: -1000;
+}
+
+@media (max-width: 812px) {
+  .stage {
+    width: 100vw;
+  }
+
+  .id-frame {
+    width: 80vw;
+    height: 50.725vw;
+  }
+
+  .intro-text {
+    top: -12vw;
+    width: 80vw;
+    font-size: 5vw;
+  }
+
+  .intro-card {
+    width: 80vw;
+    height: 50.725vw;
+  }
+
+  .photo-slot {
+    width: 30.72vw;
+    height: 34.16vw;
+    left: 16.7vw;
+    top: 12.9vw;
+    font-size: 4vw;
+  }
+
+  .photo-preview {
+    width: 32.48vw;
+    height: 32vw;
+    top: 13.7vw;
+    left: 15.6vw;
+  }
+
+  .field-name,
+  .field-dob,
+  .field-location {
+    font-size: 3.3vw;
+    height: 4vw;
+    line-height: 4vw;
+  }
+
+  .field-name {
+    width: 25.6vw;
+    top: 14.6vw;
+    right: 17.6vw;
+  }
+
+  .field-dob {
+    width: 22.4vw;
+    top: 17.6vw;
+    right: 17.6vw;
+  }
+
+  .field-location {
+    width: 22.4vw;
+    top: 20.6vw;
+    right: 17.6vw;
+  }
+
+  .signature-box {
+    width: 32.8vw;
+    font-size: 2.4vw;
+    right: 16.6vw;
+    top: 44.5vw;
+  }
+
+  .action-btn {
+    width: 32vw;
+    height: 4vw;
+    font-size: 3.5vw;
+    line-height: 3.5vw;
+    border-radius: 1vw;
+    top: 49.7vw;
+  }
+
+  .btn-color {
+    left: 16.4vw;
+  }
+
+  .btn-submit {
+    left: 51vw;
+  }
+}
