@@ -22,52 +22,59 @@ export function SignatureModal({ nameHint, onClose, onSave }: SignatureModalProp
     if (!padRef.current || padRef.current.isEmpty()) {
       onSave('')
     } else {
-      onSave(padRef.current.getCanvas().toDataURL())
+      onSave(padRef.current.getCanvas().toDataURL('image/png'))
     }
     onClose()
   }
 
   return (
-    <ModalShell onClose={finish}>
-      <div className="relative">
-        {empty && (
-          <strong className="pointer-events-none absolute inset-x-0 top-0 z-10 flex h-[100px] items-center justify-center text-white">
-            Signature
-          </strong>
+    <ModalShell onClose={onClose} title="Sign Here" wide>
+      <div className="space-y-4">
+        <div className="relative overflow-hidden rounded-xl border border-[#492b1a]/15 bg-white">
+          {empty && (
+            <p className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center text-sm font-bold uppercase tracking-[0.16em] text-ink/35">
+              Draw your signature
+            </p>
+          )}
+          <SignatureCanvas
+            ref={padRef}
+            onBegin={() => setEmpty(false)}
+            onEnd={() => {
+              if (padRef.current && !padRef.current.isEmpty()) {
+                onSave(padRef.current.getCanvas().toDataURL('image/png'))
+              }
+            }}
+            canvasProps={{
+              width: 360,
+              height: 140,
+              className: 'relative block h-[140px] w-full bg-white',
+            }}
+          />
+        </div>
+
+        {nameHint && (
+          <p className="text-center font-[family-name:var(--font-sign)] text-sm text-ink/70">
+            {nameHint}
+          </p>
         )}
-        <SignatureCanvas
-          ref={padRef}
-          onBegin={() => setEmpty(false)}
-          onEnd={() => {
-            if (padRef.current && !padRef.current.isEmpty()) {
-              onSave(padRef.current.getCanvas().toDataURL())
-            }
-          }}
-          canvasProps={{
-            width: 278,
-            height: 100,
-            className: 'relative rounded border border-black bg-white',
-          }}
-        />
-        {!empty && (
+
+        <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
-            className="absolute end-0 top-0 text-2xl text-white drop-shadow"
+            className="rounded-lg border border-[#492b1a]/15 bg-white py-2.5 text-sm font-semibold text-ink transition hover:bg-[#492b1a]/5"
             onClick={clear}
-            aria-label="Clear signature"
           >
-            ×
+            Clear
           </button>
-        )}
-        {nameHint && <p className="mt-1 text-end text-sm text-white">{nameHint}</p>}
+          <button
+            type="button"
+            className="rounded-lg bg-accent py-2.5 text-sm font-bold uppercase tracking-[0.14em] text-cream transition hover:brightness-110"
+            onClick={finish}
+          >
+            Done
+          </button>
+        </div>
       </div>
-      <button
-        type="button"
-        className="mt-2 w-full rounded border border-black/20 bg-white py-2 text-sm font-semibold"
-        onClick={finish}
-      >
-        Done
-      </button>
     </ModalShell>
   )
 }

@@ -1,6 +1,5 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState, type ChangeEvent, type DragEvent } from 'react'
 import AvatarEditor from 'react-avatar-editor'
-import { useDropzone } from 'react-dropzone'
 import { ModalShell } from './ModalShell'
 
 type PhotoModalProps = {
@@ -10,57 +9,103 @@ type PhotoModalProps = {
 
 export function PhotoModal({ onClose, onConfirm }: PhotoModalProps) {
   const editorRef = useRef<AvatarEditor>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [image, setImage] = useState<File | string>('')
-  const [scale, setScale] = useState(1)
+  const [scale, setScale] = useState(1.2)
   const [rotate, setRotate] = useState(0)
-  const [width, setWidth] = useState(220)
-  const [height, setHeight] = useState(217)
+  const [dragging, setDragging] = useState(false)
 
-  const onDrop = useCallback((files: File[]) => {
-    if (files[0]) setImage(files[0])
+  const setFromFile = useCallback((file?: File | null) => {
+    if (!file || !file.type.startsWith('image/')) return
+    setImage(file)
+    setScale(1.2)
+    setRotate(0)
   }, [])
 
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: { 'image/*': [] },
-    maxFiles: 1,
-    disabled: Boolean(image),
-    onDrop,
-  })
-
   const confirm = () => {
-    const canvas = editorRef.current?.getImage()
-    if (canvas) onConfirm(canvas.toDataURL())
+    const canvas = editorRef.current?.getImageScaledToCanvas()
+    if (canvas) onConfirm(canvas.toDataURL('image/png'))
     else onClose()
   }
 
-  const rotateBy = (deg: number) => {
-    setRotate((r) => r + deg)
-    setWidth(height)
-    setHeight(width)
+  const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setFromFile(e.target.files?.[0])
+    e.target.value = ''
+  }
+
+  const onDrop = (e: DragEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    setDragging(false)
+    setFromFile(e.dataTransfer.files?.[0])
   }
 
   return (
-    <ModalShell onClose={onClose}>
+    <ModalShell onClose={onClose} title="Submit Photo" wide>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={onFileChange}
+      />
+
       {!image ? (
-        <div {...getRootProps()} className="cursor-pointer">
-          <input {...getInputProps()} />
-          <div className="flex h-[316px] items-center justify-center border border-black bg-white text-black">
-            <strong>Drop or Upload</strong>
-          </div>
-        </div>
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          onDragEnter={(e) => {
+            e.preventDefault()
+            setDragging(true)
+          }}
+          onDragOver={(e) => {
+            e.preventDefault()
+            setDragging(true)
+          }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={onDrop}
+          className={`group flex min-h-[300px] w-full flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-6 text-center transition ${
+            dragging
+              ? 'border-accent bg-accent/10'
+              : 'border-[#492b1a]/25 bg-[#fffdf8] hover:border-accent hover:bg-accent/5'
+          }`}
+        >
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-accent/15 text-2xl text-accent transition group-hover:scale-105">
+            ↑
+          </span>
+          <span className="text-base font-bold uppercase tracking-[0.14em] text-ink">
+            Drop photo here
+          </span>
+          <span className="max-w-[220px] text-sm leading-relaxed text-ink/60">
+            or click to browse JPG, PNG, or WEBP from your device
+          </span>
+          <span className="mt-2 inline-flex rounded-full bg-accent px-5 py-2 text-xs font-bold uppercase tracking-[0.16em] text-cream transition group-hover:brightness-110">
+            Choose File
+          </span>
+        </button>
       ) : (
-        <div className="relative space-y-2">
-          <AvatarEditor
-            ref={editorRef}
-            image={image}
-            width={width}
-            height={height}
-            scale={scale}
-            rotate={rotate}
-            className="rounded"
-          />
-          <div className="flex items-center gap-2 rounded border border-black/20 bg-white px-2 py-1">
-            <span className="text-xs">−</span>
+        <div className="space-y-4">
+          <div className="overflow-hidden rounded-xl bg-[#2a1810] p-3">
+            <div className="flex justify-center">
+              <AvatarEditor
+                ref={editorRef}
+                image={image}
+                width={240}
+                height={236}
+                border={24}
+                borderRadius={4}
+                color={[42, 24, 16, 0.65]}
+                scale={scale}
+                rotate={rotate}
+                style={{ borderRadius: 8 }}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-xs font-bold uppercase tracking-[0.14em] text-ink/70">
+              <span>Zoom</span>
+              <span>{scale.toFixed(2)}x</span>
+            </div>
             <input
               type="range"
               min={1}
@@ -68,42 +113,43 @@ export function PhotoModal({ onClose, onConfirm }: PhotoModalProps) {
               step={0.01}
               value={scale}
               onChange={(e) => setScale(parseFloat(e.target.value))}
-              className="w-full"
+              className="photo-range w-full"
             />
-            <span className="text-xs">+</span>
           </div>
-          <div className="flex gap-1">
+
+          <div className="grid grid-cols-3 gap-2">
             <button
               type="button"
-              className="flex-1 rounded border border-black/20 bg-white py-2 text-sm"
-              onClick={() => rotateBy(90)}
+              className="rounded-lg border border-[#492b1a]/15 bg-white py-2.5 text-sm font-semibold text-ink transition hover:border-accent hover:bg-accent/10"
+              onClick={() => setRotate((r) => r - 90)}
             >
-              ↻
+              ↺ Left
             </button>
             <button
               type="button"
-              className="flex-1 rounded border border-black/20 bg-white py-2 text-sm"
-              onClick={() => rotateBy(-90)}
+              className="rounded-lg border border-[#492b1a]/15 bg-white py-2.5 text-sm font-semibold text-ink transition hover:border-accent hover:bg-accent/10"
+              onClick={() => setRotate((r) => r + 90)}
             >
-              ↺
+              Right ↻
             </button>
             <button
               type="button"
-              className="flex-1 rounded border border-black/20 bg-white py-2 text-sm font-bold"
-              onClick={confirm}
+              className="rounded-lg border border-[#492b1a]/15 bg-white py-2.5 text-sm font-semibold text-ink transition hover:border-accent hover:bg-accent/10"
+              onClick={() => fileInputRef.current?.click()}
             >
-              ✓
+              Replace
             </button>
           </div>
+
+          <button
+            type="button"
+            className="w-full rounded-lg bg-accent py-3 text-sm font-bold uppercase tracking-[0.16em] text-cream transition hover:brightness-110"
+            onClick={confirm}
+          >
+            Use Photo
+          </button>
         </div>
       )}
-      <button
-        type="button"
-        className="mt-2 w-full rounded border border-black/20 bg-white py-2 text-sm font-semibold"
-        onClick={image ? confirm : onClose}
-      >
-        {image ? 'Done' : 'Close'}
-      </button>
     </ModalShell>
   )
 }

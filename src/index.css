@@ -227,6 +227,35 @@ input::placeholder {
   z-index: -1000;
 }
 
+.photo-range {
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-ink) 18%, transparent);
+  outline: none;
+}
+
+.photo-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(73, 43, 26, 0.35);
+  cursor: pointer;
+}
+
+.photo-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(73, 43, 26, 0.35);
+  cursor: pointer;
+}
+
 @media (max-width: 812px) {
   .stage {
     width: 100vw;

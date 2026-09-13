@@ -96,11 +96,6 @@ export default function App() {
         )}
       </div>
 
-      <footer className="absolute bottom-0 left-0 right-0 bg-cream px-4 py-5 text-center text-[11px] uppercase text-ink">
-        Fan recreation of the Call Me If You Get Lost ID generator. Not affiliated with
-        Columbia Records or Tyler, The Creator.
-      </footer>
-
       {modal === 'photo' && (
         <PhotoModal
           onClose={() => setModal(null)}
