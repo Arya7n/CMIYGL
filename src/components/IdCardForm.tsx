@@ -39,7 +39,7 @@ export function IdCardForm({
   onSubmit,
 }: IdCardFormProps) {
   return (
-    <div className="flex w-full flex-col items-center">
+    <div className="form-stack">
       <div className="id-frame">
         <div
           key={color}
@@ -103,15 +103,6 @@ export function IdCardForm({
           )}
         </button>
 
-        <div className="card-actions card-actions-desktop">
-          <button type="button" className="action-btn" onClick={onOpenColor}>
-            Select Color
-          </button>
-          <button type="button" className="action-btn" onClick={onSubmit}>
-            Get Your ID
-          </button>
-        </div>
-
         {!introRemoved && (
           <>
             <div className={`intro-text ${introOpen ? 'open' : ''}`}>
@@ -130,14 +121,16 @@ export function IdCardForm({
         )}
       </div>
 
-      <div className="card-actions card-actions-mobile">
-        <button type="button" className="action-btn" onClick={onOpenColor}>
-          Select Color
-        </button>
-        <button type="button" className="action-btn" onClick={onSubmit}>
-          Get Your ID
-        </button>
-      </div>
+      {!introOpen && (
+        <div className="card-actions">
+          <button type="button" className="action-btn" onClick={onOpenColor}>
+            Select Color
+          </button>
+          <button type="button" className="action-btn" onClick={onSubmit}>
+            Get Your ID
+          </button>
+        </div>
+      )}
     </div>
   )
 }

@@ -10,7 +10,8 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: [
-        'images/favicon.jpg',
+        'favicon.svg',
+        'favicon-32x32.png',
         'images/og.jpg',
         'images/bg.jpg',
         'images/tylerid.png',
