@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 
 type ModalShellProps = {
   children: ReactNode
@@ -8,13 +8,22 @@ type ModalShellProps = {
 }
 
 export function ModalShell({ children, onClose, title, wide }: ModalShellProps) {
+  const [canClose, setCanClose] = useState(false)
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setCanClose(true), 400)
+    return () => window.clearTimeout(timer)
+  }, [])
+
   return (
     <div className="fixed inset-0 z-[2000] flex items-end justify-center p-0 sm:items-center sm:p-4">
       <button
         type="button"
         aria-label="Close dialog"
         className="absolute inset-0 bg-[#492b1a]/45 backdrop-blur-[2px]"
-        onClick={onClose}
+        onClick={() => {
+          if (canClose) onClose()
+        }}
       />
       <div
         className={`relative z-10 max-h-[92dvh] w-full overflow-y-auto rounded-t-2xl border border-[#492b1a]/15 bg-cream shadow-[0_24px_60px_rgba(73,43,26,0.28)] sm:rounded-2xl ${

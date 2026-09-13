@@ -192,6 +192,31 @@ input::placeholder {
   display: none;
 }
 
+.mobile-controls {
+  display: none;
+  width: min(100%, 24rem);
+}
+
+.color-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+.color-dot {
+  height: 3rem;
+  border: 2px solid rgba(73, 43, 26, 0.18);
+  border-radius: 0.85rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.color-dot.is-active {
+  border-color: #111;
+  box-shadow: 0 0 0 3px rgba(104, 201, 210, 0.55);
+}
+
 .action-btn {
   flex: 1;
   min-height: 1.7rem;
@@ -209,6 +234,7 @@ input::placeholder {
   font-weight: 700;
   letter-spacing: 0.04em;
   padding: 0.2rem 0.35rem;
+  touch-action: manipulation;
 }
 
 .action-btn:hover {
@@ -370,11 +396,16 @@ input::placeholder {
     display: none;
   }
 
+  .mobile-controls {
+    display: block;
+    margin-top: 1rem;
+  }
+
   .card-actions-mobile {
     position: static;
     display: flex;
-    width: min(100%, 24rem);
-    margin-top: 1rem;
+    width: 100%;
+    margin-top: 0;
     gap: 0.65rem;
   }
 
@@ -432,11 +463,17 @@ input::placeholder {
     display: none;
   }
 
+  .mobile-controls {
+    display: block;
+    width: min(100%, 22rem);
+    margin-top: 0.75rem;
+  }
+
   .card-actions-mobile {
     position: static;
     display: flex;
-    width: min(100%, 22rem);
-    margin-top: 0.75rem;
+    width: 100%;
+    margin-top: 0;
   }
 
   .action-btn {
