@@ -81,7 +81,6 @@ export default function App() {
             onLocationChange={setLocation}
             onOpenPhoto={() => setModal('photo')}
             onOpenColor={() => setModal('color')}
-            onSelectColor={setColor}
             onOpenSignature={() => {
               setSignature('')
               setModal('signature')
@@ -108,6 +107,7 @@ export default function App() {
       )}
       {modal === 'color' && (
         <ColorModal
+          current={color}
           onClose={() => setModal(null)}
           onSelect={(next) => {
             setColor(next)

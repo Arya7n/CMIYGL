@@ -1,4 +1,4 @@
-import { CARD_BACKGROUNDS, COLOR_SWATCHES, COPY_LAYER, formatDob } from '../lib/generateId'
+import { CARD_BACKGROUNDS, COPY_LAYER, formatDob } from '../lib/generateId'
 import type { CardColor } from '../lib/types'
 
 type IdCardFormProps = {
@@ -16,7 +16,6 @@ type IdCardFormProps = {
   onLocationChange: (value: string) => void
   onOpenPhoto: () => void
   onOpenColor: () => void
-  onSelectColor: (color: CardColor) => void
   onOpenSignature: () => void
   onSubmit: () => void
 }
@@ -36,7 +35,6 @@ export function IdCardForm({
   onLocationChange,
   onOpenPhoto,
   onOpenColor,
-  onSelectColor,
   onOpenSignature,
   onSubmit,
 }: IdCardFormProps) {
@@ -44,6 +42,7 @@ export function IdCardForm({
     <div className="flex w-full flex-col items-center">
       <div className="id-frame">
         <div
+          key={color}
           className="id-layer z-[1]"
           style={{ backgroundImage: `url(${CARD_BACKGROUNDS[color]})` }}
         />
@@ -131,28 +130,13 @@ export function IdCardForm({
         )}
       </div>
 
-      <div className="mobile-controls">
-        <div className="color-strip" role="group" aria-label="Select card color">
-          {COLOR_SWATCHES.map((swatch) => (
-            <button
-              key={swatch.id}
-              type="button"
-              aria-label={`Select ${swatch.id}`}
-              aria-pressed={color === swatch.id}
-              className={`color-dot ${color === swatch.id ? 'is-active' : ''}`}
-              style={{ background: swatch.hex }}
-              onClick={() => onSelectColor(swatch.id)}
-            />
-          ))}
-        </div>
-        <div className="card-actions card-actions-mobile">
-          <button type="button" className="action-btn" onClick={onOpenColor}>
-            Select Color
-          </button>
-          <button type="button" className="action-btn" onClick={onSubmit}>
-            Get Your ID
-          </button>
-        </div>
+      <div className="card-actions card-actions-mobile">
+        <button type="button" className="action-btn" onClick={onOpenColor}>
+          Select Color
+        </button>
+        <button type="button" className="action-btn" onClick={onSubmit}>
+          Get Your ID
+        </button>
       </div>
     </div>
   )
