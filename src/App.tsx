@@ -5,20 +5,22 @@ import { PhotoModal } from './components/PhotoModal'
 import { ResultView } from './components/ResultView'
 import { SignatureModal } from './components/SignatureModal'
 import { generateIdCanvas } from './lib/generateId'
+import { loadDraft, saveDraft } from './lib/sessionDraft'
 import type { AppView, CardColor, ModalKind } from './lib/types'
 
 export default function App() {
-  const [introOpen, setIntroOpen] = useState(true)
-  const [introRemoved, setIntroRemoved] = useState(false)
-  const [view, setView] = useState<AppView>('form')
+  const [draft] = useState(() => loadDraft())
+  const [introOpen, setIntroOpen] = useState(draft.introOpen)
+  const [introRemoved, setIntroRemoved] = useState(draft.introRemoved)
+  const [view, setView] = useState<AppView>(draft.view)
   const [modal, setModal] = useState<ModalKind>(null)
 
-  const [color, setColor] = useState<CardColor>('yellow')
-  const [photo, setPhoto] = useState('')
-  const [name, setName] = useState('')
-  const [dob, setDob] = useState('')
-  const [location, setLocation] = useState('')
-  const [signature, setSignature] = useState('')
+  const [color, setColor] = useState<CardColor>(draft.color)
+  const [photo, setPhoto] = useState(draft.photo)
+  const [name, setName] = useState(draft.name)
+  const [dob, setDob] = useState(draft.dob)
+  const [location, setLocation] = useState(draft.location)
+  const [signature, setSignature] = useState(draft.signature)
   const [resultUrl, setResultUrl] = useState<string | null>(null)
   const [generating, setGenerating] = useState(false)
 
@@ -26,6 +28,20 @@ export default function App() {
     setIntroOpen(false)
     window.setTimeout(() => setIntroRemoved(true), 900)
   }
+
+  useEffect(() => {
+    saveDraft({
+      introOpen,
+      introRemoved,
+      view,
+      color,
+      photo,
+      name,
+      dob,
+      location,
+      signature,
+    })
+  }, [introOpen, introRemoved, view, color, photo, name, dob, location, signature])
 
   useEffect(() => {
     if (view !== 'result') return
