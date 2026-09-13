@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ColorModal } from './components/ColorModal'
 import { IdCardForm } from './components/IdCardForm'
-import { IntroOverlay } from './components/IntroOverlay'
 import { PhotoModal } from './components/PhotoModal'
 import { ResultView } from './components/ResultView'
 import { SignatureModal } from './components/SignatureModal'
@@ -25,7 +24,7 @@ export default function App() {
 
   const dismissIntro = () => {
     setIntroOpen(false)
-    window.setTimeout(() => setIntroRemoved(true), 3000)
+    window.setTimeout(() => setIntroRemoved(true), 900)
   }
 
   useEffect(() => {
@@ -59,15 +58,13 @@ export default function App() {
   }, [view, photo, name, dob, location, signature, color])
 
   return (
-    <div className="relative min-h-screen w-full">
+    <div className="app-shell">
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="app-bg"
         style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/bg.jpg)` }}
       />
 
-      <div className="stage">
-        <IntroOverlay open={introOpen} removed={introRemoved} onDismiss={dismissIntro} />
-
+      <main className="stage">
         {view === 'form' ? (
           <IdCardForm
             color={color}
@@ -76,6 +73,9 @@ export default function App() {
             dob={dob}
             location={location}
             signature={signature}
+            introOpen={introOpen}
+            introRemoved={introRemoved}
+            onDismissIntro={dismissIntro}
             onNameChange={setName}
             onDobChange={setDob}
             onLocationChange={setLocation}
@@ -94,7 +94,7 @@ export default function App() {
             onEdit={() => setView('form')}
           />
         )}
-      </div>
+      </main>
 
       {modal === 'photo' && (
         <PhotoModal

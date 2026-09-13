@@ -25,6 +25,7 @@ body {
   font-weight: 200;
   background-color: var(--color-page);
   overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
 }
 
 input::placeholder {
@@ -39,22 +40,47 @@ input::placeholder {
   font-family: var(--font-sign);
 }
 
-/* ID card geometry — vw-based to match original promo layout */
+.app-shell {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+.app-bg {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
 .stage {
-  position: absolute;
-  width: 50vw;
-  text-align: center;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   z-index: 100;
+  width: min(52vw, 760px);
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding:
+    max(1.25rem, env(safe-area-inset-top))
+    1rem
+    max(1.25rem, env(safe-area-inset-bottom));
+  box-sizing: border-box;
 }
 
 .id-frame {
+  --card-w: min(50vw, 720px);
   position: relative;
-  width: 50vw;
-  height: 31.703vw;
+  width: var(--card-w);
+  height: calc(var(--card-w) * 0.63406);
   margin: 0 auto;
+  flex-shrink: 0;
 }
 
 .id-layer {
@@ -68,23 +94,29 @@ input::placeholder {
 
 .photo-slot {
   position: absolute;
-  top: 5.2vw;
-  left: 4.2vw;
-  width: 19.2vw;
-  height: 21.35vw;
+  top: 16.4%;
+  left: 8.4%;
+  width: 38.4%;
+  height: 67.3%;
   border: 1px solid #000;
   background: transparent;
-  font-size: 2vw;
+  font-size: clamp(0.7rem, 3.8cqw, 1.35rem);
   cursor: pointer;
   z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  line-height: 1.1;
+  color: #000;
 }
 
 .photo-preview {
   position: absolute;
-  top: 5.9vw;
-  left: 3.6vw;
-  width: 20.3vw;
-  height: 20vw;
+  top: 18.6%;
+  left: 7.2%;
+  width: 40.6%;
+  height: 63.1%;
   object-fit: cover;
   background: #fff;
   border: 1px solid #000;
@@ -103,56 +135,72 @@ input::placeholder {
   background: transparent;
   border: none;
   outline: none;
-  font-size: 2vw;
-  height: 2.3vw;
-  line-height: 2.3vw;
+  font-size: clamp(0.75rem, 4cqw, 1.4rem);
+  height: 7.3%;
+  line-height: 1;
   color: #000;
+  padding: 0;
 }
 
 .field-name {
-  top: 6.2vw;
-  right: 4.6vw;
-  width: 16vw;
+  top: 19.6%;
+  right: 9.2%;
+  width: 32%;
 }
 
 .field-dob {
-  top: 8.1vw;
-  right: 4.6vw;
-  width: 14vw;
+  top: 25.5%;
+  right: 9.2%;
+  width: 28%;
 }
 
 .field-location {
-  top: 10vw;
-  right: 4.6vw;
-  width: 14vw;
+  top: 31.5%;
+  right: 9.2%;
+  width: 28%;
 }
 
 .signature-box {
   position: absolute;
-  right: 4.6vw;
-  top: 24.8vw;
-  width: 20.5vw;
-  font-size: 1.5vw;
+  right: 9.2%;
+  top: 78.2%;
+  width: 41%;
+  font-size: clamp(0.65rem, 3cqw, 1.1rem);
   font-family: var(--font-sign);
   cursor: pointer;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 2vw;
+  min-height: 8%;
+  background: transparent;
+  border: none;
+  color: #000;
+}
+
+.card-actions {
+  position: absolute;
+  left: 8%;
+  bottom: 5%;
+  z-index: 10;
+  display: flex;
+  gap: 2.5%;
+  width: 42%;
+}
+
+.card-actions-mobile {
+  display: none;
 }
 
 .action-btn {
-  position: absolute;
-  z-index: 10;
-  top: 26.9vw;
-  width: 9vw;
-  height: 1.6vw;
-  font-size: 1vw;
-  line-height: 1.6vw;
+  flex: 1;
+  min-height: 1.7rem;
+  height: clamp(1.5rem, 5%, 2.1rem);
+  font-size: clamp(0.55rem, 2.1cqw, 0.85rem);
+  line-height: 1;
   text-align: center;
   border: none;
-  border-radius: 0.5vw;
+  border-radius: 0.45rem;
   text-transform: uppercase;
   color: var(--color-cream);
   background: var(--color-accent);
@@ -160,6 +208,7 @@ input::placeholder {
   cursor: pointer;
   font-weight: 700;
   letter-spacing: 0.04em;
+  padding: 0.2rem 0.35rem;
 }
 
 .action-btn:hover {
@@ -167,30 +216,22 @@ input::placeholder {
   background: var(--color-cream);
 }
 
-.btn-color {
-  left: 4vw;
-}
-
-.btn-submit {
-  left: 14.5vw;
-}
-
 .intro-text {
   font-family: "Courier New", Courier, monospace;
   font-weight: 700;
   position: absolute;
-  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2vw;
-  width: 50vw;
-  margin-top: -17vw;
+  bottom: calc(100% + 0.85rem);
+  transform: translateX(-50%);
+  font-size: clamp(0.85rem, 2.2vw, 1.35rem);
+  width: max(100%, 16rem);
   text-transform: uppercase;
-  transition: opacity 3s;
-  z-index: 1000;
+  transition: opacity 0.9s ease;
+  z-index: 1001;
   opacity: 0;
   pointer-events: none;
   text-align: center;
+  color: #111;
 }
 
 .intro-text.open {
@@ -199,15 +240,13 @@ input::placeholder {
 
 .intro-card {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50vw;
-  height: 31.703vw;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  transition: opacity 3s;
+  transition: opacity 0.9s ease;
   z-index: 1000;
   opacity: 0;
   cursor: pointer;
@@ -219,12 +258,6 @@ input::placeholder {
 .intro-card.open {
   opacity: 1;
   pointer-events: auto;
-}
-
-.intro-card.hidden,
-.intro-text.hidden {
-  display: none;
-  z-index: -1000;
 }
 
 .photo-range {
@@ -256,89 +289,157 @@ input::placeholder {
   cursor: pointer;
 }
 
-@media (max-width: 812px) {
+.result-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  width: min(100%, 22rem);
+  margin-top: 0.5rem;
+}
+
+.result-btn {
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-cream);
+  background: var(--color-result);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.25s, background 0.25s;
+}
+
+.result-btn:hover {
+  color: var(--color-result);
+  background: var(--color-cream);
+}
+
+.result-btn-accent {
+  background: var(--color-accent);
+}
+
+.result-btn-accent:hover {
+  color: var(--color-accent);
+  background: var(--color-cream);
+}
+
+.result-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
   .stage {
-    width: 100vw;
+    width: min(84vw, 680px);
   }
 
   .id-frame {
-    width: 80vw;
-    height: 50.725vw;
+    --card-w: min(80vw, 640px);
+  }
+}
+
+/* Phones */
+@media (max-width: 812px) {
+  .stage {
+    width: 100%;
+    justify-content: flex-start;
+    padding-top: max(2.5rem, env(safe-area-inset-top));
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  }
+
+  .id-frame {
+    --card-w: min(92vw, 420px);
   }
 
   .intro-text {
-    top: -12vw;
-    width: 80vw;
-    font-size: 5vw;
+    bottom: calc(100% + 0.75rem);
+    font-size: clamp(0.95rem, 4.6vw, 1.25rem);
   }
 
-  .intro-card {
-    width: 80vw;
-    height: 50.725vw;
+  .card-actions-desktop {
+    display: none;
   }
 
-  .photo-slot {
-    width: 30.72vw;
-    height: 34.16vw;
-    left: 16.7vw;
-    top: 12.9vw;
-    font-size: 4vw;
-  }
-
-  .photo-preview {
-    width: 32.48vw;
-    height: 32vw;
-    top: 13.7vw;
-    left: 15.6vw;
-  }
-
-  .field-name,
-  .field-dob,
-  .field-location {
-    font-size: 3.3vw;
-    height: 4vw;
-    line-height: 4vw;
-  }
-
-  .field-name {
-    width: 25.6vw;
-    top: 14.6vw;
-    right: 17.6vw;
-  }
-
-  .field-dob {
-    width: 22.4vw;
-    top: 17.6vw;
-    right: 17.6vw;
-  }
-
-  .field-location {
-    width: 22.4vw;
-    top: 20.6vw;
-    right: 17.6vw;
-  }
-
-  .signature-box {
-    width: 32.8vw;
-    font-size: 2.4vw;
-    right: 16.6vw;
-    top: 44.5vw;
+  .card-actions-mobile {
+    position: static;
+    display: flex;
+    width: min(100%, 24rem);
+    margin-top: 1rem;
+    gap: 0.65rem;
   }
 
   .action-btn {
-    width: 32vw;
-    height: 4vw;
-    font-size: 3.5vw;
-    line-height: 3.5vw;
-    border-radius: 1vw;
-    top: 49.7vw;
+    min-height: 2.75rem;
+    height: auto;
+    font-size: 0.8rem;
+    border-radius: 0.55rem;
+    padding: 0.7rem 0.5rem;
   }
 
-  .btn-color {
-    left: 16.4vw;
+  .photo-slot,
+  .field-name,
+  .field-dob,
+  .field-location,
+  .signature-box {
+    font-size: clamp(0.72rem, 3.4vw, 1rem);
   }
 
-  .btn-submit {
-    left: 51vw;
+  .result-actions {
+    width: min(100%, 24rem);
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+  .id-frame {
+    --card-w: 94vw;
+  }
+
+  .result-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .action-btn {
+    font-size: 0.72rem;
+  }
+}
+
+/* Short landscape screens */
+@media (max-height: 520px) and (orientation: landscape) {
+  .stage {
+    justify-content: flex-start;
+    min-height: auto;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .id-frame {
+    --card-w: min(62vh, 70vw);
+  }
+
+  .card-actions-desktop {
+    display: none;
+  }
+
+  .card-actions-mobile {
+    position: static;
+    display: flex;
+    width: min(100%, 22rem);
+    margin-top: 0.75rem;
+  }
+
+  .action-btn {
+    min-height: 2.4rem;
   }
 }

@@ -20,7 +20,6 @@ async function shareToInstagramStory(imageUrl: string) {
     return
   }
 
-  // Fallback: save image, then open Instagram so it can be posted to Stories
   const link = document.createElement('a')
   link.href = imageUrl
   link.download = 'cmiygl-id.png'
@@ -40,7 +39,6 @@ export function ResultView({ imageUrl, loading, onEdit }: ResultViewProps) {
     try {
       await shareToInstagramStory(imageUrl)
     } catch (err) {
-      // User cancelled share sheet — ignore
       if (err instanceof Error && err.name !== 'AbortError') {
         console.error(err)
       }
@@ -50,34 +48,30 @@ export function ResultView({ imageUrl, loading, onEdit }: ResultViewProps) {
   }
 
   return (
-    <div className="flex w-full flex-col items-center gap-4 px-4">
-      <div className="flex min-h-[35vw] w-full items-center justify-center">
+    <div className="flex w-full flex-col items-center gap-4 px-1 sm:px-2">
+      <div className="flex w-full items-center justify-center">
         {loading || !imageUrl ? (
-          <p className="text-ink text-lg uppercase tracking-wide">Generating…</p>
+          <p className="text-lg uppercase tracking-wide text-ink">Generating…</p>
         ) : (
           <img
             src={imageUrl}
             alt="Your Call Me If You Get Lost ID"
-            className="h-auto w-[50vw] max-w-full max-md:w-[80vw]"
+            className="h-auto w-full max-w-[min(92vw,720px)] rounded-sm shadow-[0_12px_40px_rgba(73,43,26,0.25)]"
           />
         )}
       </div>
 
-      <div className="flex flex-wrap items-center justify-center gap-2">
+      <div className="result-actions">
         {imageUrl && (
-          <a
-            href={imageUrl}
-            download="cmiygl-id.png"
-            className="inline-flex h-14 w-[150px] items-center justify-center rounded bg-result px-2 text-center text-sm font-bold uppercase text-cream transition hover:bg-cream hover:text-result"
-          >
-            Download Or Save To Photos
+          <a href={imageUrl} download="cmiygl-id.png" className="result-btn">
+            Download / Save
           </a>
         )}
         <button
           type="button"
           disabled={!imageUrl || sharing}
           onClick={onInstagramStory}
-          className="inline-flex h-14 w-[150px] items-center justify-center rounded bg-result px-2 text-center text-sm font-bold uppercase text-cream transition hover:bg-cream hover:text-result disabled:opacity-60"
+          className="result-btn"
         >
           {sharing ? 'Sharing…' : 'Instagram Story'}
         </button>
@@ -85,15 +79,11 @@ export function ResultView({ imageUrl, loading, onEdit }: ResultViewProps) {
           href="https://twitter.com/intent/tweet?url=https://www.callmeifyougetlost.com/generator&text=Get%20your%20passport%20and%20%23callmeifyougetlost"
           target="_blank"
           rel="noreferrer"
-          className="inline-flex h-14 w-[150px] items-center justify-center rounded bg-result px-2 text-center text-sm font-bold uppercase text-cream transition hover:bg-cream hover:text-result"
+          className="result-btn"
         >
           Share On Twitter
         </a>
-        <button
-          type="button"
-          onClick={onEdit}
-          className="inline-flex h-14 w-[150px] items-center justify-center rounded bg-accent px-2 text-center text-sm font-bold uppercase text-cream transition hover:bg-cream hover:text-accent"
-        >
+        <button type="button" onClick={onEdit} className="result-btn result-btn-accent">
           Edit ID
         </button>
       </div>
