@@ -23,6 +23,7 @@ npm run preview
 ## Features
 
 - Photo upload + crop / zoom / rotate
+- Photo filters (B&W, grain, vignette, Polaroid, warm)
 - Name, date of birth, location
 - Signature pad (falls back to handwritten name)
 - Four card colors (yellow, mint, pink, blue)

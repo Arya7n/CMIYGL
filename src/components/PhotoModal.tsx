@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState, type ChangeEvent, type DragEvent } from 'react'
 import AvatarEditor from 'react-avatar-editor'
+import { applyPhotoFilter, cssPreview, PHOTO_FILTERS, type PhotoFilter } from '../lib/filters'
 import { ModalShell } from './ModalShell'
 
 type PhotoModalProps = {
@@ -14,18 +15,23 @@ export function PhotoModal({ onClose, onConfirm }: PhotoModalProps) {
   const [scale, setScale] = useState(1.2)
   const [rotate, setRotate] = useState(0)
   const [dragging, setDragging] = useState(false)
+  const [filter, setFilter] = useState<PhotoFilter>('none')
 
   const setFromFile = useCallback((file?: File | null) => {
     if (!file || !file.type.startsWith('image/')) return
     setImage(file)
     setScale(1.2)
     setRotate(0)
+    setFilter('none')
   }, [])
 
   const confirm = () => {
     const canvas = editorRef.current?.getImageScaledToCanvas()
-    if (canvas) onConfirm(canvas.toDataURL('image/png'))
-    else onClose()
+    if (!canvas) {
+      onClose()
+      return
+    }
+    onConfirm(applyPhotoFilter(canvas, filter))
   }
 
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +91,7 @@ export function PhotoModal({ onClose, onConfirm }: PhotoModalProps) {
       ) : (
         <div className="space-y-4">
           <div className="overflow-hidden rounded-xl bg-[#2a1810] p-3">
-            <div className="flex justify-center">
+            <div className="flex justify-center" style={{ filter: cssPreview(filter) }}>
               <AvatarEditor
                 ref={editorRef}
                 image={image}
@@ -98,6 +104,28 @@ export function PhotoModal({ onClose, onConfirm }: PhotoModalProps) {
                 rotate={rotate}
                 style={{ borderRadius: 8 }}
               />
+            </div>
+          </div>
+
+          <div>
+            <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em] text-ink/70">
+              Filter
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {PHOTO_FILTERS.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => setFilter(option.id)}
+                  className={`touch-manipulation rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] ${
+                    filter === option.id
+                      ? 'bg-accent text-cream'
+                      : 'border border-[#492b1a]/15 bg-white text-ink'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
             </div>
           </div>
 
