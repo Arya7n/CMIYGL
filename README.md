@@ -9,6 +9,10 @@ npm install
 npm run dev
 ```
 
+## PWA
+
+After deploy (HTTPS), phones can **Add to Home Screen**. The app installs as a standalone ID generator and caches assets for offline use.
+
 ## Build
 
 ```bash
