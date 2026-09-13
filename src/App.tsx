@@ -64,6 +64,15 @@ export default function App() {
         style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/bg.jpg)` }}
       />
 
+      <a
+        href="https://github.com/Arya7n"
+        target="_blank"
+        rel="noreferrer"
+        className="site-credit"
+      >
+        made by Aryan · @Arya7n
+      </a>
+
       <main className="stage">
         {view === 'form' ? (
           <IdCardForm
